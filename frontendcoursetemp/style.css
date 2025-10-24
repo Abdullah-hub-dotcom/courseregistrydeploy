@@ -1,0 +1,62 @@
+:root {
+    --primary-color: #4da6ff;
+    --secondary-color: #ffffff;
+}
+
+body.bg-lightblue {
+    background: #e6f2ff;
+}
+
+/* Panel shadow & rounded */
+section {
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    padding: 30px;
+}
+
+/* Input & button hover */
+form input, form select, form button {
+    border-radius: 10px;
+}
+
+form button:hover {
+    background-color: #3399ff !important;
+    color: #fff;
+}
+
+/* Table style */
+table thead {
+    background-color: var(--primary-color) !important;
+    color: var(--secondary-color) !important;
+}
+
+table tbody tr:hover {
+    background-color: #d9f0ff;
+}
+
+/* Header logo */
+header img {
+    border: 2px solid white;
+}
+
+/* Smooth fade animations for panels */
+.fade {
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+    display: none;
+}
+
+.fade.show {
+    opacity: 1;
+    display: block;
+}
+/* Links under forms */
+section a {
+    text-decoration: none;
+    font-weight: 500;
+}
+
+section a:hover {
+    text-decoration: underline;
+    color: #007bff;
+}
