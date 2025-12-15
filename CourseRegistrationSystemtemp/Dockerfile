@@ -1,18 +1,25 @@
 # Use official Java 17 image
-FROM openjdk:17
+FROM openjdk:17-jdk-slim
 
 # Set working directory
 WORKDIR /app
 
-# Copy your Spring Boot project files
-COPY CourseRegistrationSystemtemp /app
+# Copy Maven wrapper and pom.xml
+COPY mvnw pom.xml ./
+COPY .mvn .mvn
 
-# Install Maven and build
-RUN apt-get update && apt-get install -y maven \
-    && mvn clean package
+# Download dependencies (build cache)
+RUN chmod +x mvnw
+RUN ./mvnw dependency:go-offline -B
 
-# Expose port (Render will assign PORT)
-EXPOSE 8080
+# Copy the rest of the project
+COPY . .
 
-# Start the Spring Boot app
-CMD ["java", "-jar", "target/*.jar"]
+# Build the Spring Boot app
+RUN ./mvnw clean package -DskipTests
+
+# Expose port (matches server.port in application.properties)
+EXPOSE 9000
+
+# Run the jar
+CMD ["java", "-jar", "target/CourseRegistrationSystem-0.0.1-SNAPSHOT.jar"]
