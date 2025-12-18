@@ -3,7 +3,7 @@ package com.example.CourseRegistrationSystem.Controller;
 import com.example.CourseRegistrationSystem.Model.Courseregistry;
 import com.example.CourseRegistrationSystem.Model.Model;
 import com.example.CourseRegistrationSystem.Service.CourseService;
-import com.example.CourseRegistrationSystem.Service.EmailSenderService;
+import com.example.CourseRegistrationSystem.Service.BrevoEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,4 +32,5 @@ public class UserController {
         return "Successfully registered for course " + courseName;
     }
 }
+
 
