@@ -1,45 +1,40 @@
-package com.example.CourseRegistrationSystem.Service;
-
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
-
 @Service
-public class EmailSenderService {
+public class BrevoEmailService {
 
-    @Autowired
-    private JavaMailSender mailsender;
+    private static final String API_URL = "https://api.brevo.com/v3/smtp/email";
 
-    public void sendCourseRegistrationEmail(String toEmail, String studentName, String courseName) {
+    @Async
+    public void sendCourseRegistrationEmail(
+            String toEmail,
+            String studentName,
+            String courseName) {
+
         try {
-            MimeMessage message = mailsender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            String apiKey = System.getenv("BREVO_API_KEY");
 
-            helper.setTo(toEmail);
-            helper.setSubject("🎓 Course Registration Confirmation - " + courseName);
+            RestTemplate restTemplate = new RestTemplate();
 
-            // Use regular string concatenation instead of """ text block
-            String htmlContent = "<html>" +
-                    "<body style=\"font-family: Arial; background:#f9f9f9; padding:20px;\">" +
-                    "<div style=\"max-width:600px; margin:auto; background:#fff; padding:20px; border-radius:10px;\">" +
-                    "<h2 style=\"color:#4CAF50; text-align:center;\">🎉 Congrats, " + studentName + "!</h2>" +
-                    "<p>You have successfully enrolled in: <strong>" + courseName + "</strong></p>" +
-                    "<p>Stay tuned for course updates.</p>" +
-                    "<hr>" +
-                    "<p style=\"text-align:center; color:#777;\">© 2025 Course Registration System</p>" +
-                    "</div>" +
-                    "</body>" +
-                    "</html>";
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("api-key", apiKey);
+            headers.setContentType(MediaType.APPLICATION_JSON);
 
-            helper.setText(htmlContent, true);
-            mailsender.send(message);
+            String body = """
+            {
+              "sender": { "email": "yourgmail@gmail.com", "name": "Course Registration System" },
+              "to": [ { "email": "%s" } ],
+              "subject": "🎓 Course Registration Confirmation - %s",
+              "htmlContent": "<h2>Hello %s</h2><p>You are registered for <b>%s</b></p>"
+            }
+            """.formatted(toEmail, courseName, studentName, courseName);
 
-            System.out.println("✅ Email sent to " + toEmail);
+            HttpEntity<String> entity = new HttpEntity<>(body, headers);
 
-        } catch (MessagingException e) {
+            ResponseEntity<String> response = restTemplate.postForEntity(
+                    API_URL, entity, String.class);
+
+            System.out.println("Brevo Email Status: " + response.getStatusCode());
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
