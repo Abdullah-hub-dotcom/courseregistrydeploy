@@ -1,3 +1,4 @@
+package com.example.CourseRegistrationSystem.Service;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -46,4 +47,5 @@ public class BrevoEmailService {
         }
     }
 }
+
 
