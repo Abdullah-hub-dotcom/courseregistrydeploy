@@ -28,10 +28,10 @@ public class BrevoEmailService {
 
             String body = """
             {
-              "sender": { "email": "yourgmail@gmail.com", "name": "Course Registration System" },
+              "sender": { "email": "githubrepo2005@gmail.com", "name": "Course Registration System" },
               "to": [ { "email": "%s" } ],
               "subject": "🎓 Course Registration Confirmation - %s",
-              "htmlContent": "<h2>Hello %s</h2><p>You are registered for <b>%s</b></p>"
+              "htmlContent": "<h2>Thanks For Your Registration %s</h2><p>You are registered for <b>%s</b> Course Access Will Notify Soon</p>"
             }
             """.formatted(toEmail, courseName, studentName, courseName);
 
@@ -47,5 +47,6 @@ public class BrevoEmailService {
         }
     }
 }
+
 
 
