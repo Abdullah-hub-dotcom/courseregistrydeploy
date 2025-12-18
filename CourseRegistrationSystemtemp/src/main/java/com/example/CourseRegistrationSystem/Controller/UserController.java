@@ -16,10 +16,8 @@ public class UserController {
 
     @Autowired
     private CourseService courseService;
-
     @Autowired
-    private EmailSenderService emailService;
-
+    private BrevoEmailService emailService;
     @GetMapping("/courses")
     public List<Model> availableCourse() {
         return courseService.availableCourse();
@@ -34,3 +32,4 @@ public class UserController {
         return "Successfully registered for course " + courseName;
     }
 }
+
